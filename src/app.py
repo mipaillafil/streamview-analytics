@@ -1,7 +1,36 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 from pathlib import Path
+
+# Paleta compartida para mantener los gráficos variados y consistentes.
+CHART_COLORS = [
+    "#00B8D9",
+    "#FF6B6B",
+    "#845EC2",
+    "#FFC75F",
+    "#2EC4B6",
+    "#F97316",
+    "#4D96FF",
+]
+
+px.defaults.color_discrete_sequence = CHART_COLORS
+px.defaults.color_continuous_scale = [
+    "#E0F7FA",
+    "#00B8D9",
+    "#005B96",
+]
+px.defaults.template = go.layout.Template(
+    layout={
+        "colorway": CHART_COLORS,
+        "paper_bgcolor": "rgba(0, 0, 0, 0)",
+        "plot_bgcolor": "#F8FAFC",
+        "font": {
+            "color": "#263238"
+        },
+    }
+)
 
 # --------------------------------------------------
 # CONFIGURACIÓN
