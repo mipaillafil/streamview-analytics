@@ -138,10 +138,44 @@ st.markdown("""
 }
 
 [data-testid="stMetric"] {
-    background-color: #111827;
-    border: 1px solid #263244;
+    background-color: #F1F5F9;
+    border: 1px solid rgba(128, 128, 128, 0.42);
     padding: 14px;
     border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(38, 50, 56, 0.08);
+}
+
+[data-testid="stMetricValue"] {
+    color: var(--text-color);
+}
+
+[data-testid="stMetricLabel"] {
+    color: var(--text-color);
+}
+
+[data-theme="dark"] [data-testid="stMetric"] {
+    background-color: #263244;
+    border-color: #3B4A62;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] [data-testid="stMetricValue"],
+[data-theme="dark"] [data-testid="stMetricLabel"] {
+    color: #F8FAFC;
+}
+
+@media (prefers-color-scheme: dark) {
+
+    [data-testid="stMetric"] {
+        background-color: #263244;
+        border-color: #3B4A62;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    [data-testid="stMetricValue"],
+    [data-testid="stMetricLabel"] {
+        color: #F8FAFC;
+    }
 }
 
 </style>
