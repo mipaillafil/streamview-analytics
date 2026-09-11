@@ -576,6 +576,21 @@ if page == "🏠 Resumen ejecutivo":
             use_container_width=True
         )
 
+        # HALLAZGOS CLAVE
+        st.subheader("💡 Hallazgos clave")
+
+        if not by_genre.empty:
+            top_genre = by_genre.iloc[0]["genero"]
+            top_genre_value = int(by_genre.iloc[0]["reproducciones"])
+
+            st.markdown(
+                f"""
+                - **Género con mayor consumo:** {top_genre}, con **{top_genre_value:,} reproducciones**.
+                - **Consumo:** además de las reproducciones, se consideran los minutos vistos y la completitud.
+                - **Participación:** las interacciones y calificaciones complementan el análisis del consumo.
+                """
+            )
+
 # ==================================================
 # PÁGINA 2
 # USUARIOS
@@ -863,6 +878,36 @@ elif page == "🎬 Contenidos":
             use_container_width=True
         )
 
+        # CALIFICACIÓN PROMEDIO POR GÉNERO
+        if not ratings.empty:
+            rating_genre = (
+                ratings.merge(
+                    c[["content_id", "genero"]],
+                    on="content_id",
+                    how="left"
+                )
+                .groupby("genero")["calificacion"]
+                .mean()
+                .reset_index(name="calificacion_promedio")
+                .sort_values("calificacion_promedio", ascending=False)
+            )
+
+            fig = px.bar(
+                rating_genre,
+                x="calificacion_promedio",
+                y="genero",
+                orientation="h",
+                title="Calificación promedio por género",
+                range_x=[0, 5]
+            )
+            fig.update_xaxes(title="Calificación promedio (1 a 5)")
+            fig.update_yaxes(title="Género")
+
+            st.plotly_chart(
+                fig,
+                use_container_width=True
+            )
+
 # ==================================================
 # PÁGINA 4
 # CONSUMO
@@ -939,6 +984,35 @@ elif page == "▶️ Consumo":
                 markers=True,
                 title="Minutos vistos por mes"
             )
+
+            st.plotly_chart(
+                fig,
+                use_container_width=True
+            )
+
+        # REPRODUCCIONES POR DISPOSITIVO
+        device_consumption = (
+            r.merge(
+                d[["device_id", "tipo_dispositivo"]],
+                on="device_id",
+                how="left"
+            )
+            .groupby("tipo_dispositivo")
+            .size()
+            .reset_index(name="reproducciones")
+            .sort_values("reproducciones", ascending=False)
+        )
+
+        if not device_consumption.empty:
+            fig = px.bar(
+                device_consumption,
+                x="reproducciones",
+                y="tipo_dispositivo",
+                orientation="h",
+                title="Reproducciones por dispositivo"
+            )
+            fig.update_xaxes(title="Reproducciones")
+            fig.update_yaxes(title="Dispositivo")
 
             st.plotly_chart(
                 fig,
